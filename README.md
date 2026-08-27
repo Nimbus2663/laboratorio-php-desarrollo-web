@@ -5,12 +5,14 @@ Unidad: INTRODUCCION AL LENGUAJE DE PROGRAMACION PHP
 Estudiante: Ricardo Caballero
 Materia: Desarrollo Web
 
-Este paquete contiene una pagina principal funcional y los archivos de apoyo solicitados en la presentacion. La parte central del trabajo esta en `index.php`, donde se pueden ejecutar directamente las practicas principales desde el navegador:
+Este paquete contiene una pagina principal funcional y los archivos de apoyo solicitados en la presentacion. La parte central del trabajo esta en `index.php`, que ahora funciona como panel de herramientas PHP para usar el proyecto de forma practica:
 
-- Conversor de pulgadas a centimetros.
-- Calculadora con suma, resta, multiplicacion y redondeo de decimales.
+- Calculadora avanzada con suma, resta, multiplicacion, division, potencia, modulo, porcentaje, promedio y redondeo.
+- Conversor de unidades con pulgadas, centimetros, metros, pies, kilometros y millas.
+- Analizador de tipos con `gettype`, casting, `settype`, `is_numeric` y `var_dump`.
 - Formulario que recibe datos con `$_REQUEST`.
-- Demostraciones de variables, tipos de datos, casting, constantes, `var_dump`, operadores y precedencia.
+- Historial de resultados usando sesiones de PHP.
+- Demostraciones de variables, constantes, operadores y precedencia.
 
 Tambien se incluyen archivos separados como respaldo y evidencia de cada tema:
 
@@ -38,7 +40,7 @@ Tambien se incluyen archivos separados como respaldo y evidencia de cada tema:
 http://localhost/laboratorio_php/
 ```
 
-4. Use `index.php` para probar las funciones principales dentro de la misma pagina. Los enlaces del final abren los ejemplos separados.
+4. Use `index.php` para probar las herramientas principales dentro de la misma pagina. Los enlaces del final abren los ejemplos separados.
 
 ## Tecnologia utilizada
 
