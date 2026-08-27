@@ -1,0 +1,147 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fb;
+    color: #172033;
+    line-height: 1.55;
+}
+
+header {
+    background: #0b3d91;
+    color: #ffffff;
+    padding: 28px 7vw;
+}
+
+header h1 {
+    margin: 0 0 6px;
+    font-size: 2rem;
+}
+
+header p {
+    margin: 0;
+    color: #dbeafe;
+}
+
+main {
+    width: min(1100px, 92vw);
+    margin: 28px auto 48px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.card,
+.panel {
+    background: #ffffff;
+    border: 1px solid #d9e2f2;
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.card h2,
+.panel h2 {
+    margin-top: 0;
+    color: #0b3d91;
+    font-size: 1.2rem;
+}
+
+a {
+    color: #0b3d91;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+label {
+    display: block;
+    margin: 12px 0 4px;
+    font-weight: 700;
+}
+
+input,
+select,
+button {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #b9c5d6;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+button {
+    margin-top: 16px;
+    background: #0b3d91;
+    color: #ffffff;
+    border: 0;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+button:hover {
+    background: #072d6b;
+}
+
+.result {
+    margin-top: 16px;
+    padding: 14px;
+    border-left: 5px solid #0b3d91;
+    background: #edf4ff;
+}
+
+.error {
+    margin-top: 16px;
+    padding: 14px;
+    border-left: 5px solid #b42318;
+    background: #fff1f0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    background: #ffffff;
+}
+
+th,
+td {
+    border: 1px solid #d9e2f2;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: #e8f0fe;
+}
+
+code,
+pre {
+    font-family: Consolas, "Courier New", monospace;
+}
+
+pre {
+    overflow-x: auto;
+    background: #111827;
+    color: #f9fafb;
+    padding: 14px;
+    border-radius: 8px;
+}
+
+.nav {
+    margin-bottom: 18px;
+}
+
+.muted {
+    color: #5f6f89;
+}
