@@ -16,6 +16,13 @@ header {
     padding: 28px 7vw;
 }
 
+header.hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 24px;
+    align-items: center;
+}
+
 header h1 {
     margin: 0 0 6px;
     font-size: 2rem;
@@ -29,6 +36,55 @@ header p {
 main {
     width: min(1100px, 92vw);
     margin: 28px auto 48px;
+}
+
+.eyebrow {
+    margin: 0 0 6px;
+    color: #16784f;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+header .eyebrow {
+    color: #a7f3d0;
+}
+
+.student-box {
+    display: grid;
+    gap: 6px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 8px;
+}
+
+.student-box span {
+    color: #dbeafe;
+    font-size: 0.85rem;
+}
+
+.student-box a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.section-heading {
+    margin-bottom: 16px;
+}
+
+.section-heading h2 {
+    margin: 0;
+    color: #172033;
+    font-size: 1.5rem;
+}
+
+.tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+    margin-bottom: 18px;
 }
 
 .grid {
@@ -92,11 +148,23 @@ button:hover {
     background: #072d6b;
 }
 
+.panel {
+    margin-bottom: 18px;
+}
+
 .result {
     margin-top: 16px;
     padding: 14px;
     border-left: 5px solid #0b3d91;
     background: #edf4ff;
+}
+
+.result p {
+    margin: 0 0 6px;
+}
+
+.result p:last-child {
+    margin-bottom: 0;
 }
 
 .error {
@@ -144,4 +212,28 @@ pre {
 
 .muted {
     color: #5f6f89;
+}
+
+.link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+}
+
+.link-grid a {
+    display: block;
+    padding: 10px 12px;
+    background: #f8fafc;
+    border: 1px solid #d9e2f2;
+    border-radius: 6px;
+}
+
+@media (max-width: 720px) {
+    header.hero {
+        grid-template-columns: 1fr;
+    }
+
+    .tool-grid {
+        grid-template-columns: 1fr;
+    }
 }
