@@ -5,7 +5,14 @@ Unidad: INTRODUCCION AL LENGUAJE DE PROGRAMACION PHP
 Estudiante: Ricardo Caballero
 Materia: Desarrollo Web
 
-Este paquete contiene los ejemplos practicos y laboratorios solicitados en la presentacion:
+Este paquete contiene una pagina principal funcional y los archivos de apoyo solicitados en la presentacion. La parte central del trabajo esta en `index.php`, donde se pueden ejecutar directamente las practicas principales desde el navegador:
+
+- Conversor de pulgadas a centimetros.
+- Calculadora con suma, resta, multiplicacion y redondeo de decimales.
+- Formulario que recibe datos con `$_REQUEST`.
+- Demostraciones de variables, tipos de datos, casting, constantes, `var_dump`, operadores y precedencia.
+
+Tambien se incluyen archivos separados como respaldo y evidencia de cada tema:
 
 - Verificacion de instalacion de PHP con `phpinfo.php`.
 - Practica 1 con `hola_mundo.php`.
@@ -31,7 +38,7 @@ Este paquete contiene los ejemplos practicos y laboratorios solicitados en la pr
 http://localhost/laboratorio_php/
 ```
 
-4. Use la pagina `index.php` para abrir cada ejemplo.
+4. Use `index.php` para probar las funciones principales dentro de la misma pagina. Los enlaces del final abren los ejemplos separados.
 
 ## Tecnologia utilizada
 
