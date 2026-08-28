@@ -57,24 +57,14 @@ function add_history($tool, $detail, $result)
     $_SESSION['tool_history'] = array_slice($_SESSION['tool_history'], 0, 8);
 }
 
-function convert_unit($value, $type)
+function convert_length($value, $fromUnit, $toUnit, $unitOptions)
 {
-    switch ($type) {
-        case 'inch_cm':
-            return $value * INCH_TO_CM;
-        case 'cm_inch':
-            return $value / INCH_TO_CM;
-        case 'meter_foot':
-            return $value / FOOT_TO_METER;
-        case 'foot_meter':
-            return $value * FOOT_TO_METER;
-        case 'km_mile':
-            return $value / MILE_TO_KM;
-        case 'mile_km':
-            return $value * MILE_TO_KM;
-        default:
-            return null;
+    if (!isset($unitOptions[$fromUnit], $unitOptions[$toUnit])) {
+        return null;
     }
+
+    $meters = $value * $unitOptions[$fromUnit]['to_meter'];
+    return $meters / $unitOptions[$toUnit]['to_meter'];
 }
 
 if (!defined('INCH_TO_CM')) {
@@ -100,57 +90,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $formAction === 'clear_history') {
 }
 
 $unitOptions = [
-    'inch_cm' => [
-        'label' => 'Pulgadas a centimetros',
-        'from' => 'pulgadas',
-        'to' => 'centimetros',
-        'to_symbol' => 'cm',
-        'formula' => 'centimetros = pulgadas x 2.54',
+    'mm' => [
+        'label' => 'Milimetros',
+        'symbol' => 'mm',
+        'to_meter' => 0.001,
     ],
-    'cm_inch' => [
-        'label' => 'Centimetros a pulgadas',
-        'from' => 'centimetros',
-        'to' => 'pulgadas',
-        'to_symbol' => 'in',
-        'formula' => 'pulgadas = centimetros / 2.54',
+    'cm' => [
+        'label' => 'Centimetros',
+        'symbol' => 'cm',
+        'to_meter' => 0.01,
     ],
-    'meter_foot' => [
-        'label' => 'Metros a pies',
-        'from' => 'metros',
-        'to' => 'pies',
-        'to_symbol' => 'ft',
-        'formula' => 'pies = metros / 0.3048',
+    'm' => [
+        'label' => 'Metros',
+        'symbol' => 'm',
+        'to_meter' => 1,
     ],
-    'foot_meter' => [
-        'label' => 'Pies a metros',
-        'from' => 'pies',
-        'to' => 'metros',
-        'to_symbol' => 'm',
-        'formula' => 'metros = pies x 0.3048',
+    'km' => [
+        'label' => 'Kilometros',
+        'symbol' => 'km',
+        'to_meter' => 1000,
     ],
-    'km_mile' => [
-        'label' => 'Kilometros a millas',
-        'from' => 'kilometros',
-        'to' => 'millas',
-        'to_symbol' => 'mi',
-        'formula' => 'millas = kilometros / 1.60934',
+    'in' => [
+        'label' => 'Pulgadas',
+        'symbol' => 'in',
+        'to_meter' => INCH_TO_CM / 100,
     ],
-    'mile_km' => [
-        'label' => 'Millas a kilometros',
-        'from' => 'millas',
-        'to' => 'kilometros',
-        'to_symbol' => 'km',
-        'formula' => 'kilometros = millas x 1.60934',
+    'ft' => [
+        'label' => 'Pies',
+        'symbol' => 'ft',
+        'to_meter' => FOOT_TO_METER,
+    ],
+    'yd' => [
+        'label' => 'Yardas',
+        'symbol' => 'yd',
+        'to_meter' => 0.9144,
+    ],
+    'mi' => [
+        'label' => 'Millas',
+        'symbol' => 'mi',
+        'to_meter' => MILE_TO_KM * 1000,
     ],
 ];
 
 $unitValueRaw = trim($_POST['unit_value'] ?? '10');
-$unitType = $_POST['unit_type'] ?? 'inch_cm';
+$unitFrom = $_POST['unit_from'] ?? 'in';
+$unitTo = $_POST['unit_to'] ?? 'cm';
 $unitResult = null;
 $unitError = '';
 
-if (!isset($unitOptions[$unitType])) {
-    $unitType = 'inch_cm';
+if (!isset($unitOptions[$unitFrom])) {
+    $unitFrom = 'in';
+}
+
+if (!isset($unitOptions[$unitTo])) {
+    $unitTo = 'cm';
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $formAction === 'unit_converter') {
@@ -159,17 +152,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $formAction === 'unit_converter') {
     if ($unitValue === null) {
         $unitError = 'Ingrese un numero valido para convertir.';
     } else {
-        $convertedValue = convert_unit($unitValue, $unitType);
+        $convertedValue = convert_length($unitValue, $unitFrom, $unitTo, $unitOptions);
+        $conversionRate = convert_length(1, $unitFrom, $unitTo, $unitOptions);
         $unitResult = [
             'input' => $unitValue,
             'output' => $convertedValue,
-            'meta' => $unitOptions[$unitType],
+            'from_meta' => $unitOptions[$unitFrom],
+            'to_meta' => $unitOptions[$unitTo],
+            'rate' => $conversionRate,
         ];
 
         add_history(
             'Conversor',
-            fixed_number($unitValue) . ' ' . $unitOptions[$unitType]['from'],
-            fixed_number($convertedValue) . ' ' . $unitOptions[$unitType]['to_symbol']
+            fixed_number($unitValue) . ' ' . $unitOptions[$unitFrom]['symbol'] . ' a ' . $unitOptions[$unitTo]['symbol'],
+            fixed_number($convertedValue) . ' ' . $unitOptions[$unitTo]['symbol']
         );
     }
 }
@@ -504,7 +500,7 @@ $history = $_SESSION['tool_history'] ?? [];
                         <p class="eyebrow">Unidades</p>
                         <h2>Conversor</h2>
                     </div>
-                    <span class="badge accent">2.54</span>
+                    <span class="badge accent">Libre</span>
                 </div>
 
                 <form method="post" action="#conversor" class="tool-form">
@@ -513,14 +509,29 @@ $history = $_SESSION['tool_history'] ?? [];
                     <label for="unit_value">Valor</label>
                     <input id="unit_value" name="unit_value" value="<?php echo h($unitValueRaw); ?>" inputmode="decimal" required>
 
-                    <label for="unit_type">Conversion</label>
-                    <select id="unit_type" name="unit_type">
-                        <?php foreach ($unitOptions as $value => $option): ?>
-                            <option value="<?php echo h($value); ?>" <?php echo $unitType === $value ? 'selected' : ''; ?>>
-                                <?php echo h($option['label']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label for="unit_from">Convertir desde</label>
+                            <select id="unit_from" name="unit_from">
+                                <?php foreach ($unitOptions as $value => $option): ?>
+                                    <option value="<?php echo h($value); ?>" <?php echo $unitFrom === $value ? 'selected' : ''; ?>>
+                                        <?php echo h($option['label']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="field-group">
+                            <label for="unit_to">Convertir a</label>
+                            <select id="unit_to" name="unit_to">
+                                <?php foreach ($unitOptions as $value => $option): ?>
+                                    <option value="<?php echo h($value); ?>" <?php echo $unitTo === $value ? 'selected' : ''; ?>>
+                                        <?php echo h($option['label']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
 
                     <button type="submit">Convertir</button>
                 </form>
@@ -531,13 +542,20 @@ $history = $_SESSION['tool_history'] ?? [];
 
                 <?php if ($unitResult !== null): ?>
                     <div class="result result-strong">
-                        <span><?php echo h($unitResult['meta']['formula']); ?></span>
+                        <span>
+                            1 <?php echo h($unitResult['from_meta']['symbol']); ?>
+                            =
+                            <?php echo h(clean_number($unitResult['rate'], 8)); ?>
+                            <?php echo h($unitResult['to_meta']['symbol']); ?>
+                        </span>
                         <strong>
                             <?php echo h(fixed_number($unitResult['output'])); ?>
-                            <?php echo h($unitResult['meta']['to_symbol']); ?>
+                            <?php echo h($unitResult['to_meta']['symbol']); ?>
                         </strong>
                         <small>
-                            <?php echo h(fixed_number($unitResult['input']) . ' ' . $unitResult['meta']['from']); ?>
+                            <?php echo h(fixed_number($unitResult['input']) . ' ' . $unitResult['from_meta']['label']); ?>
+                            a
+                            <?php echo h($unitResult['to_meta']['label']); ?>
                         </small>
                     </div>
                 <?php endif; ?>
