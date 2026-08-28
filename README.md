@@ -8,7 +8,7 @@ Materia: Desarrollo Web
 Este paquete contiene una pagina principal funcional y los archivos de apoyo solicitados en la presentacion. La parte central del trabajo esta en `index.php`, que ahora funciona como panel de herramientas PHP para usar el proyecto de forma practica:
 
 - Calculadora avanzada con suma, resta, multiplicacion, division, potencia, modulo, porcentaje, promedio y redondeo.
-- Conversor de unidades con pulgadas, centimetros, metros, pies, kilometros y millas.
+- Conversor de unidades con seleccion libre de unidad origen y unidad destino: milimetros, centimetros, metros, kilometros, pulgadas, pies, yardas y millas.
 - Analizador de tipos con `gettype`, casting, `settype`, `is_numeric` y `var_dump`.
 - Formulario que recibe datos con `$_REQUEST`.
 - Historial de resultados usando sesiones de PHP.
